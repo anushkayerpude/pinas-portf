@@ -1,0 +1,154 @@
+/* ==========================================================================
+   Tactical Cyber-Magenta Design System
+   ========================================================================== */
+
+:root {
+  /* Core Dark Magenta & Void Tones */
+  --bg-space: #06010a;
+  --bg-deep: #0e0116;
+  --bg-surface: rgba(22, 3, 34, 0.75);
+  --bg-surface-elevated: rgba(38, 5, 58, 0.85);
+  --bg-glass: rgba(26, 4, 39, 0.65);
+
+  /* Vivid Neon Palette */
+  --neon-magenta: #ff007f;
+  --neon-pink: #ff2a8d;
+  --neon-hot: #ff00a0;
+  --neon-violet: #8338ec;
+  --neon-cyan: #00f0ff;
+  --neon-amber: #ffd700;
+  --laser-red: #ff0033;
+
+  /* HUD & Text Tokens */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.72);
+  --text-muted: rgba(255, 0, 127, 0.6);
+  --text-hud: #00f0ff;
+
+  /* Borders & Shadows */
+  --border-neon: rgba(255, 0, 127, 0.4);
+  --border-cyan: rgba(0, 240, 255, 0.4);
+  --glow-magenta: 0 0 16px rgba(255, 0, 127, 0.45);
+  --glow-cyan: 0 0 16px rgba(0, 240, 255, 0.45);
+  --glow-intense: 0 0 28px rgba(255, 0, 127, 0.8);
+
+  /* Fonts */
+  --font-hud: 'Orbitron', -apple-system, sans-serif;
+  --font-mono: 'Rajdhani', 'SF Mono', monospace;
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Dimensions */
+  --hud-pad: 24px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-space);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  user-select: none;
+}
+
+/* Custom Jet Cursor mode */
+body.custom-cursor-active,
+body.custom-cursor-active * {
+  cursor: none !important;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 30%, #1a0226 0%, #08010d 65%, #040007 100%);
+}
+
+#canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Subtle CRT Scanline overlay */
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 900;
+  background: linear-gradient(
+    rgba(18, 16, 26, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 127, 0.02),
+    rgba(0, 240, 255, 0.01),
+    rgba(131, 56, 236, 0.02)
+  );
+  background-size: 100% 3px, 6px 100%;
+  opacity: 0.6;
+}
+
+/* Custom Scrollbar for dossiers */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(14, 1, 22, 0.6);
+  border-left: 1px solid rgba(255, 0, 127, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neon-magenta);
+  border-radius: 3px;
+  box-shadow: 0 0 8px var(--neon-magenta);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-pink);
+}
+
+/* High-tech badge utility */
+.hud-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-family: var(--font-hud);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--neon-magenta);
+  background: rgba(255, 0, 127, 0.1);
+  border: 1px solid var(--border-neon);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
+}
+
+.hud-badge.cyan {
+  color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.1);
+  border-color: var(--border-cyan);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+.hud-badge.amber {
+  color: var(--neon-amber);
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.4);
+}

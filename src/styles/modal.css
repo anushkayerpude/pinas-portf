@@ -1,0 +1,520 @@
+/* ==========================================================================
+   Tactical Mission Dossier Modal Styles
+   ========================================================================== */
+
+.dossier-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(6, 1, 10, 0.78);
+  backdrop-filter: blur(14px);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dossier-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dossier-modal {
+  width: 100%;
+  max-width: 620px;
+  height: 100vh;
+  background: linear-gradient(135deg, rgba(26, 3, 40, 0.94) 0%, rgba(10, 1, 15, 0.96) 100%);
+  border-left: 2px solid var(--neon-magenta);
+  box-shadow: -10px 0 40px rgba(255, 0, 127, 0.4);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+.dossier-modal-overlay.active .dossier-modal {
+  transform: translateX(0);
+}
+
+/* Glowing Corner Brackets */
+.modal-corner-tl, .modal-corner-bl {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-left: 2px solid var(--neon-cyan);
+  pointer-events: none;
+}
+.modal-corner-tl { top: 12px; left: 12px; border-top: 2px solid var(--neon-cyan); }
+.modal-corner-bl { bottom: 12px; left: 12px; border-bottom: 2px solid var(--neon-cyan); }
+
+/* Modal Header */
+.modal-header {
+  padding: 28px 28px 20px 28px;
+  border-bottom: 1px solid rgba(255, 0, 127, 0.25);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.modal-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-sector-code {
+  font-family: var(--font-hud);
+  font-size: 11px;
+  color: var(--neon-cyan);
+  letter-spacing: 2.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-title {
+  font-family: var(--font-hud);
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.modal-subtitle {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+.modal-close-btn {
+  background: rgba(255, 0, 127, 0.1);
+  border: 1px solid var(--neon-magenta);
+  color: var(--neon-magenta);
+  width: 38px;
+  height: 38px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: var(--neon-magenta);
+  color: #000;
+  box-shadow: var(--glow-intense);
+  transform: scale(1.08);
+}
+
+/* Modal Body */
+.modal-body {
+  padding: 28px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.dossier-summary-card {
+  background: rgba(255, 0, 127, 0.05);
+  border: 1px solid rgba(255, 0, 127, 0.2);
+  border-left: 3px solid var(--neon-magenta);
+  padding: 16px;
+  border-radius: 0 4px 4px 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Tactical Stats Grid */
+.tactical-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.stat-box {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 0, 127, 0.25);
+  padding: 14px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-family: var(--font-hud);
+  font-size: 9px;
+  color: var(--neon-magenta);
+  letter-spacing: 1.5px;
+}
+
+.stat-value {
+  font-family: var(--font-hud);
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+/* Career Timeline */
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  padding-left: 18px;
+}
+
+.timeline-list::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--neon-magenta) 0%, rgba(255, 0, 127, 0.1) 100%);
+}
+
+.timeline-item {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 0, 127, 0.2);
+  padding: 18px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.2s ease;
+}
+
+.timeline-item:hover {
+  border-color: var(--neon-magenta);
+  box-shadow: 0 0 16px rgba(255, 0, 127, 0.2);
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: -24px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--neon-magenta);
+  box-shadow: 0 0 10px var(--neon-magenta);
+}
+
+.timeline-period {
+  font-family: var(--font-hud);
+  font-size: 10px;
+  color: var(--neon-cyan);
+  letter-spacing: 1.5px;
+}
+
+.timeline-role {
+  font-family: var(--font-hud);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.timeline-org {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--neon-magenta);
+}
+
+.timeline-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.timeline-highlights {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.timeline-highlights li {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.timeline-highlights li::before {
+  content: '▸';
+  color: var(--neon-magenta);
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.tag-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+
+/* Hobbies & Passions Grid (China) */
+.hobbies-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hobby-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 42, 141, 0.25);
+  border-left: 3px solid var(--neon-pink);
+  padding: 18px;
+  border-radius: 0 4px 4px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.hobby-card:hover {
+  background: rgba(255, 42, 141, 0.08);
+  border-color: var(--neon-pink);
+  transform: translateX(4px);
+}
+
+.hobby-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hobby-title {
+  font-family: var(--font-hud);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hobby-level {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--neon-amber);
+  background: rgba(255, 215, 0, 0.1);
+  padding: 2px 8px;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.hobby-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.hobby-quote {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--neon-cyan);
+  font-style: italic;
+}
+
+/* Projects & Weapons Bay (Japan & Singapore) */
+.projects-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.project-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 0, 127, 0.25);
+  padding: 18px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-card:hover {
+  border-color: var(--neon-magenta);
+  box-shadow: 0 0 20px rgba(255, 0, 127, 0.25);
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project-name {
+  font-family: var(--font-hud);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.project-type {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--neon-cyan);
+}
+
+.project-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.project-links {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.project-btn {
+  font-family: var(--font-hud);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(255, 0, 127, 0.15);
+  border: 1px solid var(--neon-magenta);
+  padding: 6px 12px;
+  border-radius: 2px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.project-btn:hover {
+  background: var(--neon-magenta);
+  color: #000;
+  box-shadow: var(--glow-magenta);
+}
+
+/* Skills Arsenal */
+.skill-category {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skill-category-title {
+  font-family: var(--font-hud);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--neon-magenta);
+  text-transform: uppercase;
+}
+
+.skills-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 0, 127, 0.25);
+  padding: 5px 12px;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.skill-tag:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+}
+
+/* Comms Terminal (UAE) */
+.comms-terminal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-neon);
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.terminal-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--neon-cyan);
+}
+
+.direct-email-box {
+  background: rgba(255, 0, 127, 0.1);
+  border: 1px solid var(--neon-magenta);
+  padding: 14px;
+  border-radius: 4px;
+  font-family: var(--font-hud);
+  font-size: 14px;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 1.5px;
+  box-shadow: var(--glow-magenta);
+}
+
+.action-cta-btn {
+  background: var(--neon-magenta);
+  color: #000;
+  border: none;
+  font-family: var(--font-hud);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 24px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: var(--glow-intense);
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.action-cta-btn:hover {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px #fff;
+}

@@ -1,0 +1,75 @@
+/* ==========================================================================
+   Nuclear Detonation & Tactical FX Styles
+   ========================================================================== */
+
+/* Thermal White/Magenta Flash Screen Overlay */
+.nuke-thermal-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, #ffffff 0%, #ff007f 60%, rgba(131, 56, 236, 0.4) 100%);
+  pointer-events: none;
+  z-index: 99995;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+.nuke-thermal-flash.active {
+  animation: nuke-flash-anim 0.45s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+@keyframes nuke-flash-anim {
+  0% {
+    opacity: 0.95;
+    transform: scale(1.02);
+  }
+  15% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* Nuclear Explosion Camera Shake */
+.screen-shake {
+  animation: camera-shake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes camera-shake {
+  10%, 90% {
+    transform: translate3d(-3px, -2px, 0) rotate(-0.2deg);
+  }
+  20%, 80% {
+    transform: translate3d(4px, 3px, 0) rotate(0.3deg);
+  }
+  30%, 50%, 70% {
+    transform: translate3d(-5px, -4px, 0) rotate(-0.4deg);
+  }
+  40%, 60% {
+    transform: translate3d(5px, 3px, 0) rotate(0.4deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+/* Ambient Pulsing Radar Grid Background Effect */
+.tactical-grid-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255, 0, 127, 0.08) 0%, transparent 70%),
+    linear-gradient(rgba(255, 0, 127, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 127, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
+  z-index: 2;
+  opacity: 0.6;
+}

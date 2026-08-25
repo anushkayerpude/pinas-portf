@@ -1,0 +1,339 @@
+/* ==========================================================================
+   Tactical HUD Overlay Styles
+   ========================================================================== */
+
+.hud-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--hud-pad);
+}
+
+.hud-overlay > * {
+  pointer-events: auto;
+}
+
+/* 1. Header Bar */
+.hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.hud-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pilot-callsign-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-neon);
+  backdrop-filter: blur(12px);
+  padding: 8px 16px;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--glow-magenta);
+}
+
+.pilot-callsign {
+  font-family: var(--font-hud);
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+  color: var(--neon-magenta);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--neon-magenta);
+  box-shadow: 0 0 10px var(--neon-magenta);
+  animation: radar-blink 1.2s infinite ease-in-out;
+}
+
+.pilot-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: var(--text-secondary);
+}
+
+.hud-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.hud-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-neon);
+  backdrop-filter: blur(12px);
+  color: var(--text-primary);
+  font-family: var(--font-hud);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--glow-magenta);
+}
+
+.hud-btn:hover {
+  background: rgba(255, 0, 127, 0.25);
+  border-color: var(--neon-magenta);
+  box-shadow: var(--glow-intense);
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+.hud-btn.active {
+  background: var(--neon-magenta);
+  color: #000;
+  font-weight: 700;
+}
+
+.hud-btn.cyan {
+  border-color: var(--border-cyan);
+  box-shadow: var(--glow-cyan);
+  color: var(--neon-cyan);
+}
+
+.hud-btn.cyan:hover {
+  background: rgba(0, 240, 255, 0.25);
+  color: #fff;
+  border-color: var(--neon-cyan);
+}
+
+/* 2. Tactical Telemetry Corners */
+.hud-telemetry-left {
+  position: absolute;
+  left: var(--hud-pad);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--bg-surface);
+  border-left: 2px solid var(--neon-magenta);
+  border-top: 1px solid rgba(255, 0, 127, 0.2);
+  border-bottom: 1px solid rgba(255, 0, 127, 0.2);
+  backdrop-filter: blur(12px);
+  padding: 16px;
+  border-radius: 0 4px 4px 0;
+  font-family: var(--font-mono);
+}
+
+.telemetry-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.telemetry-label {
+  font-size: 9px;
+  color: var(--neon-magenta);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.telemetry-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 1.5px;
+  font-family: var(--font-hud);
+}
+
+.telemetry-val.cyan {
+  color: var(--neon-cyan);
+}
+
+/* 3. Target Reticle Hover Preview Popover */
+.hud-target-preview {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -180%);
+  background: rgba(14, 1, 22, 0.9);
+  border: 1px solid var(--neon-magenta);
+  backdrop-filter: blur(16px);
+  padding: 14px 20px;
+  border-radius: 4px;
+  box-shadow: 0 0 30px rgba(255, 0, 127, 0.6);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 500;
+  min-width: 240px;
+}
+
+.hud-target-preview.visible {
+  opacity: 1;
+  transform: translate(-50%, -160%);
+}
+
+.target-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.target-code {
+  font-family: var(--font-hud);
+  font-size: 11px;
+  color: var(--neon-cyan);
+  letter-spacing: 2px;
+}
+
+.target-name {
+  font-family: var(--font-hud);
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 1.5px;
+}
+
+.target-section {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--neon-magenta);
+  font-weight: 600;
+}
+
+.target-cta {
+  font-family: var(--font-hud);
+  font-size: 9px;
+  letter-spacing: 1.8px;
+  color: var(--neon-amber);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 4. Bottom Sector Navigation Bar */
+.hud-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.hud-instruction {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 0, 127, 0.2);
+}
+
+.hud-sector-dock {
+  display: flex;
+  gap: 10px;
+  background: rgba(14, 1, 22, 0.85);
+  border: 1px solid var(--border-neon);
+  backdrop-filter: blur(16px);
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 0 24px rgba(255, 0, 127, 0.35);
+  max-width: 95vw;
+  overflow-x: auto;
+}
+
+.sector-nav-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 0, 127, 0.25);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.sector-nav-btn:hover {
+  background: rgba(255, 0, 127, 0.2);
+  border-color: var(--neon-magenta);
+  box-shadow: var(--glow-magenta);
+  transform: translateY(-2px);
+}
+
+.sector-nav-btn.active {
+  background: var(--neon-magenta);
+  border-color: var(--neon-magenta);
+  box-shadow: var(--glow-intense);
+}
+
+.sector-nav-btn.active .sec-code,
+.sector-nav-btn.active .sec-title {
+  color: #000;
+}
+
+.sec-code {
+  font-family: var(--font-hud);
+  font-size: 9px;
+  color: var(--neon-cyan);
+  letter-spacing: 1px;
+}
+
+.sec-title {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Animations */
+@keyframes radar-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.85); }
+}
+
+@media (max-width: 768px) {
+  .hud-telemetry-left {
+    display: none;
+  }
+  .pilot-title {
+    display: none;
+  }
+  .hud-sector-dock {
+    padding: 6px;
+    gap: 6px;
+  }
+  .sector-nav-btn {
+    padding: 6px 10px;
+  }
+}

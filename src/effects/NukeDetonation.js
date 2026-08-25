@@ -1,9 +1,9 @@
 import { soundFx } from './SoundFx.js';
 
 /**
- * Nuclear Detonation Effect Engine
- * Triggers thermal white flash, screen shake, expanding shockwave rings,
- * mushroom cloud fireball particles, and heavy sub-bass explosion audio on click.
+ * Nuclear Detonation Effect Engine (Khroma Palette Edition)
+ * Triggers thermal whiteout flash, multi-axis camera shake, expanding distortion rings,
+ * rising mushroom cloud fireball particles, and heavy sub-bass explosion audio on click.
  */
 
 export class NukeDetonation {
@@ -13,7 +13,6 @@ export class NukeDetonation {
   }
 
   init() {
-    // Overlay canvas for shockwaves & explosion particles
     this.canvas = document.createElement('canvas');
     this.canvas.id = 'nuke-canvas';
     this.canvas.style.position = 'fixed';
@@ -25,7 +24,6 @@ export class NukeDetonation {
     this.canvas.style.zIndex = '99990';
     document.body.appendChild(this.canvas);
 
-    // Thermal flash div
     this.flashEl = document.createElement('div');
     this.flashEl.className = 'nuke-thermal-flash';
     document.body.appendChild(this.flashEl);
@@ -35,10 +33,9 @@ export class NukeDetonation {
 
     window.addEventListener('resize', () => this.resize());
 
-    // Trigger nuclear explosion on click anywhere
+    // Trigger nuclear detonation on pointer click anywhere
     window.addEventListener('pointerdown', (e) => {
-      // Ignore if clicking sound mute button to avoid sound loop before unmuting
-      if (e.target.closest('#sound-toggle-btn')) {
+      if (e.target.closest('#sound-toggle-btn, #scramble-jet-btn')) {
         return;
       }
       this.detonate(e.clientX, e.clientY);
@@ -57,68 +54,64 @@ export class NukeDetonation {
   }
 
   detonate(x, y) {
-    // 1. Play procedural nuclear explosion sub-bass and sonic boom
     soundFx.playNukeDetonation();
-
-    // 2. Thermal flash pulse
     this.triggerFlash();
-
-    // 3. Screen shake
     this.triggerScreenShake();
 
-    // 4. Spawn explosion entity with shockwaves and particle cloud
     const explosion = {
       x,
       y,
       age: 0,
-      maxAge: 75,
+      maxAge: 80,
       shockwaves: [
-        { radius: 0, maxRadius: 280, speed: 14, width: 8, color: '#ffffff' },
-        { radius: 0, maxRadius: 360, speed: 10, width: 14, color: '#ff007f' },
-        { radius: 0, maxRadius: 440, speed: 7, width: 6, color: '#00f0ff' }
+        { radius: 0, maxRadius: 320, speed: 15, width: 8, color: '#EDDBD8' },
+        { radius: 0, maxRadius: 420, speed: 11, width: 16, color: '#B2094D' },
+        { radius: 0, maxRadius: 520, speed: 7, width: 8, color: '#771450' }
       ],
       fireball: {
         radius: 4,
-        maxRadius: 65,
+        maxRadius: 75,
         alpha: 1.0
       },
       particles: []
     };
 
-    // Create radial fireball embers and rising mushroom cloud billows
-    const particleCount = 65;
+    const particleCount = 75;
     for (let i = 0; i < particleCount; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = 2 + Math.random() * 9;
-      const isMushroomCap = Math.random() > 0.4;
-      const life = 35 + Math.random() * 40;
+      const speed = 2 + Math.random() * 11;
+      const isMushroomCap = Math.random() > 0.35;
+      const life = 40 + Math.random() * 45;
 
       explosion.particles.push({
         x: x,
         y: y,
         vx: Math.cos(angle) * speed,
-        // Mushroom billow bias upward
-        vy: Math.sin(angle) * speed - (isMushroomCap ? (2 + Math.random() * 3) : 0),
-        size: 5 + Math.random() * 9,
-        growth: 0.35 + Math.random() * 0.4,
+        vy: Math.sin(angle) * speed - (isMushroomCap ? (2.5 + Math.random() * 3.5) : 0),
+        size: 6 + Math.random() * 11,
+        growth: 0.35 + Math.random() * 0.45,
         life: life,
         maxLife: life,
         type: isMushroomCap ? 'cloud' : 'spark',
-        color: this.getRandomExplosionColor()
+        color: this.getRandomKhromaColor()
       });
     }
 
     this.explosions.push(explosion);
   }
 
-  getRandomExplosionColor() {
-    const palette = ['#ffffff', '#fff275', '#ff9f1c', '#ff007f', '#ff2a8d', '#e0115f', '#8338ec'];
-    return palette[Math.floor(Math.random() * palette.length)];
+  getRandomKhromaColor() {
+    const khromaPalette = [
+      '#EDDBD8', '#D7C1D1', '#D4B4BD', '#C4809F',
+      '#B2094D', '#7C0645', '#771450', '#810D1E',
+      '#66021B', '#5B2662', '#5E1B42', '#371E4D'
+    ];
+    return khromaPalette[Math.floor(Math.random() * khromaPalette.length)];
   }
 
   triggerFlash() {
     this.flashEl.classList.remove('active');
-    void this.flashEl.offsetWidth; // Trigger DOM reflow
+    void this.flashEl.offsetWidth;
     this.flashEl.classList.add('active');
   }
 
@@ -148,7 +141,7 @@ export class NukeDetonation {
 
       const ctx = this.ctx;
 
-      // Draw Expanding Shockwave Rings
+      // Draw Shockwaves
       for (const sw of exp.shockwaves) {
         sw.radius += sw.speed;
         const swProgress = Math.min(1, sw.radius / sw.maxRadius);
@@ -160,17 +153,17 @@ export class NukeDetonation {
           ctx.arc(exp.x, exp.y, sw.radius, 0, Math.PI * 2);
           ctx.strokeStyle = sw.color;
           ctx.lineWidth = sw.width * (1 - swProgress * 0.7);
-          ctx.globalAlpha = alpha * 0.85;
+          ctx.globalAlpha = alpha * 0.88;
           ctx.shadowColor = sw.color;
-          ctx.shadowBlur = 18;
+          ctx.shadowBlur = 22;
           ctx.stroke();
           ctx.restore();
         }
       }
 
-      // Draw Expanding Fireball Core
+      // Draw Fireball Core
       if (exp.fireball.radius < exp.fireball.maxRadius) {
-        exp.fireball.radius += 3.5;
+        exp.fireball.radius += 4.0;
         exp.fireball.alpha = Math.max(0, 1 - (exp.fireball.radius / exp.fireball.maxRadius));
 
         ctx.save();
@@ -178,10 +171,10 @@ export class NukeDetonation {
           exp.x, exp.y, 0,
           exp.x, exp.y, exp.fireball.radius
         );
-        grad.addColorStop(0, '#ffffff');
-        grad.addColorStop(0.3, 'rgba(255, 240, 100, 0.9)');
-        grad.addColorStop(0.6, 'rgba(255, 0, 127, 0.7)');
-        grad.addColorStop(1, 'rgba(131, 56, 236, 0)');
+        grad.addColorStop(0, '#EDDBD8');
+        grad.addColorStop(0.3, 'rgba(240, 190, 200, 0.95)');
+        grad.addColorStop(0.6, 'rgba(178, 9, 77, 0.75)');
+        grad.addColorStop(1, 'rgba(55, 30, 77, 0)');
 
         ctx.fillStyle = grad;
         ctx.globalAlpha = exp.fireball.alpha;
@@ -191,13 +184,13 @@ export class NukeDetonation {
         ctx.restore();
       }
 
-      // Draw Explosion Embers & Mushroom Cloud Particles
+      // Draw Embers & Mushroom Smoke Billows
       for (let pIdx = exp.particles.length - 1; pIdx >= 0; pIdx--) {
         const p = exp.particles[pIdx];
         p.x += p.vx;
         p.y += p.vy;
         p.size += p.growth;
-        p.vx *= 0.94; // Air resistance
+        p.vx *= 0.94;
         p.vy *= 0.94;
         p.life--;
 
@@ -208,10 +201,10 @@ export class NukeDetonation {
         }
 
         ctx.save();
-        ctx.globalAlpha = Math.max(0, pProgress * 0.85);
+        ctx.globalAlpha = Math.max(0, pProgress * 0.9);
         ctx.fillStyle = p.color;
         ctx.shadowColor = p.color;
-        ctx.shadowBlur = p.type === 'spark' ? 12 : 6;
+        ctx.shadowBlur = p.type === 'spark' ? 14 : 7;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size * (p.type === 'spark' ? pProgress : 1), 0, Math.PI * 2);

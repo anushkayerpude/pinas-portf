@@ -1,13 +1,12 @@
 import * as THREE from 'three';
 import gsap from 'gsap';
-import { F22Raptor } from './F22Raptor.js';
 import { TacticalGlobe } from './Globe.js';
 import { soundFx } from '../effects/SoundFx.js';
 
 /**
- * Three.js Master Scene Manager
- * Controls the 3D canvas, lighting, nebula starfield, F-22 Raptor flight paths,
- * interactive globe controls, and intro cinematic flyby sequence.
+ * Three.js Master Scene Manager (Khroma Edition)
+ * Controls 3D canvas, lighting, plum-amethyst nebula dust, interactive globe with
+ * on-surface country labels, and smooth globe reveal transitions.
  */
 
 export class SceneManager {
@@ -26,13 +25,13 @@ export class SceneManager {
   }
 
   init() {
-    // 1. Scene & Camera
+    // 1. Scene & Depth Fog (#14071b)
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.FogExp2(0x08010d, 0.008);
+    this.scene.fog = new THREE.FogExp2(0x14071b, 0.007);
 
     const aspect = window.innerWidth / window.innerHeight;
     this.camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
-    this.camera.position.set(0, 5, 48);
+    this.camera.position.set(0, 3, 50);
 
     // 2. Renderer
     this.renderer = new THREE.WebGLRenderer({
@@ -43,16 +42,16 @@ export class SceneManager {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.25;
+    this.renderer.toneMappingExposure = 1.2;
     this.container.appendChild(this.renderer.domElement);
 
-    // 3. Cinematic Lighting
+    // 3. Cinematic Lighting (Khroma Plum & Rose Tones)
     this.setupLighting();
 
-    // 4. Starfield & Deep Nebula Particle Dust
+    // 4. Starfield & Amethyst Dust
     this.createStarfield();
 
-    // 5. Tactical Asia Globe
+    // 5. Tactical Asia Globe with On-Globe Country Labels
     this.globe = new TacticalGlobe(
       this.scene,
       this.camera,
@@ -60,59 +59,56 @@ export class SceneManager {
       this.onSectorHover
     );
 
-    // 6. F-22 Raptor Fighter Aircraft
-    this.f22 = new F22Raptor();
-    this.scene.add(this.f22.group);
+    // Initial globe scale (hidden until jet flight concludes)
+    this.globe.group.scale.set(0.01, 0.01, 0.01);
+    this.globe.group.position.set(0, 0, 0);
 
-    // 7. Event Listeners (Drag, Hover, Click, Resize)
+    // 6. Setup Mouse/Touch Event Listeners
     this.setupEventListeners();
 
-    // 8. Trigger Initial Flyby Sequence
-    this.triggerIntroFlyby();
-
-    // 9. Start Render Loop
+    // 7. Start Render Loop
     this.animate = this.animate.bind(this);
     requestAnimationFrame(this.animate);
   }
 
   setupLighting() {
-    // Primary Key Sun Light (Warm White / Amber)
-    const keyLight = new THREE.DirectionalLight(0xfff5ea, 2.2);
+    // Warm Key Sunlight
+    const keyLight = new THREE.DirectionalLight(0xEDDBD8, 2.4);
     keyLight.position.set(30, 25, 40);
     this.scene.add(keyLight);
 
-    // Cyber Magenta Rim Light (From back-left)
-    const magentaRim = new THREE.DirectionalLight(0xff007f, 3.5);
+    // Vivid Magenta Rim Light
+    const magentaRim = new THREE.DirectionalLight(0xB2094D, 3.8);
     magentaRim.position.set(-35, 10, -25);
     this.scene.add(magentaRim);
 
-    // Electric Cyan Fill Light (From below)
-    const cyanFill = new THREE.DirectionalLight(0x00f0ff, 1.6);
-    cyanFill.position.set(0, -25, 15);
-    this.scene.add(cyanFill);
+    // Soft Mauve Fill Light
+    const mauveFill = new THREE.DirectionalLight(0xD4B4BD, 1.4);
+    mauveFill.position.set(0, -25, 15);
+    this.scene.add(mauveFill);
 
-    // Deep Ambient Glow
-    const ambientLight = new THREE.AmbientLight(0x200330, 1.4);
+    // Deep Plum Ambient Glow
+    const ambientLight = new THREE.AmbientLight(0x371E4D, 1.5);
     this.scene.add(ambientLight);
   }
 
   createStarfield() {
-    const starCount = 1800;
+    const starCount = 2000;
     const positions = [];
     const colors = [];
 
-    const colWhite = new THREE.Color(0xffffff);
-    const colMagenta = new THREE.Color(0xff007f);
-    const colCyan = new THREE.Color(0x00f0ff);
+    const colRose = new THREE.Color(0xEDDBD8);
+    const colMagenta = new THREE.Color(0xB2094D);
+    const colPlum = new THREE.Color(0x771450);
 
     for (let i = 0; i < starCount; i++) {
-      const x = (Math.random() - 0.5) * 350;
-      const y = (Math.random() - 0.5) * 350;
-      const z = (Math.random() - 0.5) * 350;
+      const x = (Math.random() - 0.5) * 380;
+      const y = (Math.random() - 0.5) * 380;
+      const z = (Math.random() - 0.5) * 380;
       positions.push(x, y, z);
 
       const r = Math.random();
-      const c = r > 0.7 ? colMagenta : (r > 0.4 ? colCyan : colWhite);
+      const c = r > 0.65 ? colMagenta : (r > 0.35 ? colRose : colPlum);
       colors.push(c.r, c.g, c.b);
     }
 
@@ -121,10 +117,10 @@ export class SceneManager {
     starGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
     const starMat = new THREE.PointsMaterial({
-      size: 0.8,
+      size: 0.85,
       vertexColors: true,
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.8,
       blending: THREE.AdditiveBlending
     });
 
@@ -132,68 +128,16 @@ export class SceneManager {
     this.scene.add(this.starfield);
   }
 
-  triggerIntroFlyby() {
-    // Play jet sound & sonic boom
-    soundFx.playJetFlyby();
+  revealGlobe() {
+    // Smooth zoom & pop-in animation for the Asia Globe after the F-22 exits
+    gsap.fromTo(this.globe.group.scale,
+      { x: 0.05, y: 0.05, z: 0.05 },
+      { x: 1.0, y: 1.0, z: 1.0, duration: 1.8, ease: "elastic.out(1, 0.75)" }
+    );
 
-    // Reset jet position way out in the distance
-    const jet = this.f22.group;
-    jet.position.set(-60, 18, -80);
-    jet.rotation.set(THREE.MathUtils.degToRad(-15), THREE.MathUtils.degToRad(120), THREE.MathUtils.degToRad(35));
-    jet.scale.set(0.6, 0.6, 0.6);
-
-    // Initial globe position slightly lower
-    this.globe.group.position.set(0, -1.5, 0);
-
-    const tl = gsap.timeline();
-
-    // 1. High-speed supersonic pass right through camera center
-    tl.to(jet.position, {
-      x: 18,
-      y: 4,
-      z: 22,
-      duration: 1.3,
-      ease: "power2.inOut",
-      onUpdate: () => {
-        if (jet.position.z > 0 && !jet.userData.boomTriggered) {
-          jet.userData.boomTriggered = true;
-          this.f22.triggerSonicShockwave();
-        }
-      }
-    });
-
-    tl.to(jet.rotation, {
-      x: THREE.MathUtils.degToRad(10),
-      y: THREE.MathUtils.degToRad(140),
-      z: THREE.MathUtils.degToRad(-45),
-      duration: 1.3,
-      ease: "power2.inOut"
-    }, "<");
-
-    // 2. Bank into high tactical orbit around the globe
-    tl.to(jet.position, {
-      x: 14,
-      y: 10,
-      z: 16,
-      duration: 1.8,
-      ease: "power1.out"
-    });
-
-    tl.to(jet.rotation, {
-      x: THREE.MathUtils.degToRad(-10),
-      y: THREE.MathUtils.degToRad(205),
-      z: THREE.MathUtils.degToRad(-25),
-      duration: 1.8,
-      ease: "power1.out",
-      onComplete: () => {
-        jet.userData.boomTriggered = false;
-      }
-    }, "<");
-
-    // Smooth camera settle
     gsap.fromTo(this.camera.position,
-      { z: 65, y: 15 },
-      { z: 46, y: 3, duration: 2.5, ease: "power2.out" }
+      { z: 65, y: 12 },
+      { z: 48, y: 2, duration: 2.0, ease: "power2.out" }
     );
   }
 
@@ -206,15 +150,6 @@ export class SceneManager {
         duration: 1.2,
         ease: "power2.inOut"
       });
-
-      // Jet maneuvers toward the engaged sector coordinates
-      gsap.to(this.f22.group.position, {
-        x: 12,
-        y: 8,
-        z: 18,
-        duration: 1.4,
-        ease: "power2.out"
-      });
     }
 
     if (this.onSectorSelect) {
@@ -225,9 +160,9 @@ export class SceneManager {
   setupEventListeners() {
     window.addEventListener('resize', () => this.onWindowResize());
 
-    // Globe Drag Rotation
     const dom = this.renderer.domElement;
 
+    // Drag to rotate globe
     dom.addEventListener('pointerdown', (e) => {
       this.isDragging = true;
       this.globe.autoRotate = false;
@@ -235,7 +170,6 @@ export class SceneManager {
     });
 
     dom.addEventListener('pointermove', (e) => {
-      // Normalize mouse coordinates for Raycasting
       this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
       this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
@@ -245,8 +179,6 @@ export class SceneManager {
 
         this.globe.group.rotation.y += deltaX * 0.005;
         this.globe.group.rotation.x += deltaY * 0.005;
-
-        // Clamp latitude rotation so globe doesn't invert
         this.globe.group.rotation.x = Math.max(-1.1, Math.min(1.1, this.globe.group.rotation.x));
 
         this.previousMousePosition = { x: e.clientX, y: e.clientY };
@@ -257,7 +189,7 @@ export class SceneManager {
       this.isDragging = false;
     });
 
-    // Sector Click
+    // Click country on globe
     dom.addEventListener('click', () => {
       this.raycaster.setFromCamera(this.mouse, this.camera);
       this.globe.handleClick(this.raycaster);
@@ -277,29 +209,15 @@ export class SceneManager {
   }
 
   animate() {
-    const delta = this.clock.getDelta();
     const time = this.clock.getElapsedTime();
 
-    // Raycast hover test when not dragging
     if (!this.isDragging) {
       this.raycaster.setFromCamera(this.mouse, this.camera);
       this.globe.handleRaycast(this.raycaster);
     }
 
-    // Update Globe
     this.globe.update(time);
 
-    // Update F-22 Raptor Jet
-    this.f22.update(time);
-
-    // Gentle orbital patrol loop for F-22 when idle
-    const orbitSpeed = 0.25;
-    const orbitRadius = 24;
-    this.f22.group.position.x = Math.cos(time * orbitSpeed) * orbitRadius;
-    this.f22.group.position.z = Math.sin(time * orbitSpeed) * orbitRadius + 4;
-    this.f22.group.rotation.y = -time * orbitSpeed - Math.PI / 2;
-
-    // Slow starfield rotation
     if (this.starfield) {
       this.starfield.rotation.y += 0.0003;
     }

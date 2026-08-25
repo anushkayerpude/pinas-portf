@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Tactical Mission Dossier Modal Styles
+   Tactical Mission Dossier Modal Styles (Khroma Palette Edition)
    ========================================================================== */
 
 .dossier-modal-overlay {
@@ -8,8 +8,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(6, 1, 10, 0.78);
-  backdrop-filter: blur(14px);
+  background: rgba(20, 7, 27, 0.82);
+  backdrop-filter: blur(16px);
   z-index: 1000;
   display: flex;
   justify-content: flex-end;
@@ -25,11 +25,11 @@
 
 .dossier-modal {
   width: 100%;
-  max-width: 620px;
+  max-width: 640px;
   height: 100vh;
-  background: linear-gradient(135deg, rgba(26, 3, 40, 0.94) 0%, rgba(10, 1, 15, 0.96) 100%);
-  border-left: 2px solid var(--neon-magenta);
-  box-shadow: -10px 0 40px rgba(255, 0, 127, 0.4);
+  background: linear-gradient(135deg, rgba(55, 30, 77, 0.96) 0%, rgba(33, 10, 45, 0.98) 100%);
+  border-left: 3px solid var(--neon-magenta);
+  box-shadow: -15px 0 50px rgba(178, 9, 77, 0.45);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
@@ -47,20 +47,20 @@
   position: absolute;
   width: 16px;
   height: 16px;
-  border-left: 2px solid var(--neon-cyan);
+  border-left: 2px solid var(--k-7);
   pointer-events: none;
 }
-.modal-corner-tl { top: 12px; left: 12px; border-top: 2px solid var(--neon-cyan); }
-.modal-corner-bl { bottom: 12px; left: 12px; border-bottom: 2px solid var(--neon-cyan); }
+.modal-corner-tl { top: 12px; left: 12px; border-top: 2px solid var(--k-7); }
+.modal-corner-bl { bottom: 12px; left: 12px; border-bottom: 2px solid var(--k-7); }
 
 /* Modal Header */
 .modal-header {
-  padding: 28px 28px 20px 28px;
-  border-bottom: 1px solid rgba(255, 0, 127, 0.25);
+  padding: 30px 28px 22px 28px;
+  border-bottom: 1px solid rgba(178, 9, 77, 0.3);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.28);
 }
 
 .modal-title-group {
@@ -72,7 +72,7 @@
 .modal-sector-code {
   font-family: var(--font-hud);
   font-size: 11px;
-  color: var(--neon-cyan);
+  color: var(--k-7);
   letter-spacing: 2.5px;
   display: flex;
   align-items: center;
@@ -84,23 +84,23 @@
   font-size: 26px;
   font-weight: 900;
   letter-spacing: 1.5px;
-  color: #fff;
+  color: var(--k-31);
   text-transform: uppercase;
 }
 
 .modal-subtitle {
   font-family: var(--font-mono);
   font-size: 13px;
-  color: var(--text-secondary);
+  color: var(--k-7);
   letter-spacing: 1px;
 }
 
 .modal-close-btn {
-  background: rgba(255, 0, 127, 0.1);
+  background: rgba(178, 9, 77, 0.15);
   border: 1px solid var(--neon-magenta);
-  color: var(--neon-magenta);
-  width: 38px;
-  height: 38px;
+  color: var(--k-31);
+  width: 40px;
+  height: 40px;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -112,7 +112,7 @@
 
 .modal-close-btn:hover {
   background: var(--neon-magenta);
-  color: #000;
+  color: #fff;
   box-shadow: var(--glow-intense);
   transform: scale(1.08);
 }
@@ -128,14 +128,14 @@
 }
 
 .dossier-summary-card {
-  background: rgba(255, 0, 127, 0.05);
-  border: 1px solid rgba(255, 0, 127, 0.2);
+  background: rgba(178, 9, 77, 0.08);
+  border: 1px solid rgba(178, 9, 77, 0.25);
   border-left: 3px solid var(--neon-magenta);
-  padding: 16px;
+  padding: 18px;
   border-radius: 0 4px 4px 0;
   font-size: 14px;
   line-height: 1.6;
-  color: var(--text-secondary);
+  color: var(--k-7);
 }
 
 /* Tactical Stats Grid */
@@ -147,7 +147,7 @@
 
 .stat-box {
   background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 0, 127, 0.25);
+  border: 1px solid rgba(178, 9, 77, 0.3);
   padding: 14px;
   border-radius: 4px;
   display: flex;
@@ -158,7 +158,7 @@
 .stat-label {
   font-family: var(--font-hud);
   font-size: 9px;
-  color: var(--neon-magenta);
+  color: var(--k-7);
   letter-spacing: 1.5px;
 }
 
@@ -166,7 +166,7 @@
   font-family: var(--font-hud);
   font-size: 20px;
   font-weight: 800;
-  color: #fff;
+  color: var(--k-31);
   letter-spacing: 1px;
 }
 
@@ -186,13 +186,13 @@
   bottom: 8px;
   left: 0;
   width: 2px;
-  background: linear-gradient(180deg, var(--neon-magenta) 0%, rgba(255, 0, 127, 0.1) 100%);
+  background: linear-gradient(180deg, var(--neon-magenta) 0%, rgba(178, 9, 77, 0.1) 100%);
 }
 
 .timeline-item {
   position: relative;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 0, 127, 0.2);
+  border: 1px solid rgba(178, 9, 77, 0.25);
   padding: 18px;
   border-radius: 4px;
   display: flex;
@@ -203,7 +203,7 @@
 
 .timeline-item:hover {
   border-color: var(--neon-magenta);
-  box-shadow: 0 0 16px rgba(255, 0, 127, 0.2);
+  box-shadow: 0 0 20px rgba(178, 9, 77, 0.3);
 }
 
 .timeline-item::before {
@@ -221,7 +221,7 @@
 .timeline-period {
   font-family: var(--font-hud);
   font-size: 10px;
-  color: var(--neon-cyan);
+  color: var(--k-7);
   letter-spacing: 1.5px;
 }
 
@@ -229,7 +229,7 @@
   font-family: var(--font-hud);
   font-size: 16px;
   font-weight: 700;
-  color: #fff;
+  color: var(--k-31);
 }
 
 .timeline-org {
@@ -241,7 +241,7 @@
 .timeline-desc {
   font-size: 13px;
   line-height: 1.5;
-  color: var(--text-secondary);
+  color: var(--k-7);
 }
 
 .timeline-highlights {
@@ -253,7 +253,7 @@
 
 .timeline-highlights li {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--k-31);
   display: flex;
   align-items: flex-start;
   gap: 8px;
@@ -274,9 +274,9 @@
 .tag-pill {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: var(--neon-cyan);
-  background: rgba(0, 240, 255, 0.08);
-  border: 1px solid rgba(0, 240, 255, 0.25);
+  color: var(--k-31);
+  background: rgba(178, 9, 77, 0.15);
+  border: 1px solid rgba(178, 9, 77, 0.4);
   padding: 3px 8px;
   border-radius: 2px;
 }
@@ -290,8 +290,8 @@
 
 .hobby-card {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 42, 141, 0.25);
-  border-left: 3px solid var(--neon-pink);
+  border: 1px solid rgba(178, 9, 77, 0.3);
+  border-left: 3px solid var(--neon-magenta);
   padding: 18px;
   border-radius: 0 4px 4px 0;
   display: flex;
@@ -301,8 +301,8 @@
 }
 
 .hobby-card:hover {
-  background: rgba(255, 42, 141, 0.08);
-  border-color: var(--neon-pink);
+  background: rgba(178, 9, 77, 0.12);
+  border-color: var(--neon-magenta);
   transform: translateX(4px);
 }
 
@@ -316,7 +316,7 @@
   font-family: var(--font-hud);
   font-size: 15px;
   font-weight: 700;
-  color: #fff;
+  color: var(--k-31);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -325,23 +325,23 @@
 .hobby-level {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: var(--neon-amber);
-  background: rgba(255, 215, 0, 0.1);
+  color: var(--k-31);
+  background: rgba(178, 9, 77, 0.25);
   padding: 2px 8px;
   border-radius: 2px;
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  border: 1px solid rgba(178, 9, 77, 0.45);
 }
 
 .hobby-desc {
   font-size: 13px;
   line-height: 1.5;
-  color: var(--text-secondary);
+  color: var(--k-7);
 }
 
 .hobby-quote {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--neon-cyan);
+  color: var(--k-31);
   font-style: italic;
 }
 
@@ -354,7 +354,7 @@
 
 .project-card {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 0, 127, 0.25);
+  border: 1px solid rgba(178, 9, 77, 0.3);
   padding: 18px;
   border-radius: 4px;
   display: flex;
@@ -364,7 +364,7 @@
 
 .project-card:hover {
   border-color: var(--neon-magenta);
-  box-shadow: 0 0 20px rgba(255, 0, 127, 0.25);
+  box-shadow: 0 0 24px rgba(178, 9, 77, 0.35);
 }
 
 .project-header {
@@ -377,19 +377,19 @@
   font-family: var(--font-hud);
   font-size: 16px;
   font-weight: 700;
-  color: #fff;
+  color: var(--k-31);
 }
 
 .project-type {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--neon-cyan);
+  color: var(--k-7);
 }
 
 .project-desc {
   font-size: 13px;
   line-height: 1.5;
-  color: var(--text-secondary);
+  color: var(--k-7);
 }
 
 .project-links {
@@ -404,9 +404,9 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   color: #fff;
-  background: rgba(255, 0, 127, 0.15);
+  background: rgba(178, 9, 77, 0.2);
   border: 1px solid var(--neon-magenta);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 2px;
   text-decoration: none;
   display: inline-flex;
@@ -417,7 +417,7 @@
 
 .project-btn:hover {
   background: var(--neon-magenta);
-  color: #000;
+  color: #fff;
   box-shadow: var(--glow-magenta);
 }
 
@@ -432,7 +432,7 @@
   font-family: var(--font-hud);
   font-size: 12px;
   letter-spacing: 1.5px;
-  color: var(--neon-magenta);
+  color: var(--k-31);
   text-transform: uppercase;
 }
 
@@ -445,18 +445,18 @@
 .skill-tag {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: #fff;
+  color: var(--k-31);
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 0, 127, 0.25);
+  border: 1px solid rgba(178, 9, 77, 0.3);
   padding: 5px 12px;
   border-radius: 3px;
   transition: all 0.2s ease;
 }
 
 .skill-tag:hover {
-  border-color: var(--neon-cyan);
-  color: var(--neon-cyan);
-  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+  border-color: var(--neon-magenta);
+  background: rgba(178, 9, 77, 0.25);
+  box-shadow: 0 0 12px rgba(178, 9, 77, 0.4);
 }
 
 /* Comms Terminal (UAE) */
@@ -476,17 +476,17 @@
   align-items: center;
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--neon-cyan);
+  color: var(--k-7);
 }
 
 .direct-email-box {
-  background: rgba(255, 0, 127, 0.1);
+  background: rgba(178, 9, 77, 0.15);
   border: 1px solid var(--neon-magenta);
   padding: 14px;
   border-radius: 4px;
   font-family: var(--font-hud);
   font-size: 14px;
-  color: #fff;
+  color: var(--k-31);
   text-align: center;
   letter-spacing: 1.5px;
   box-shadow: var(--glow-magenta);
@@ -494,7 +494,7 @@
 
 .action-cta-btn {
   background: var(--neon-magenta);
-  color: #000;
+  color: #fff;
   border: none;
   font-family: var(--font-hud);
   font-size: 12px;
@@ -515,6 +515,7 @@
 
 .action-cta-btn:hover {
   background: #fff;
+  color: #000;
   transform: translateY(-2px);
   box-shadow: 0 0 30px #fff;
 }

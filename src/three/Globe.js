@@ -3,10 +3,9 @@ import { sectorData } from '../data/portfolioData.js';
 import { soundFx } from '../effects/SoundFx.js';
 
 /**
- * 3D Interactive Tactical Globe
- * Features custom procedural landmass shaders, pulsing sector beacons for Asia countries
- * (India = Professional Journey, China = Hobbies, etc.), flight trajectory arcs,
- * and raycasting interaction.
+ * 3D Interactive Tactical Globe (Khroma Palette Edition)
+ * Countries are rendered and prominently labeled directly on the globe surface.
+ * Clicking a country on the globe opens its corresponding category dossier.
  */
 
 export class TacticalGlobe {
@@ -20,9 +19,9 @@ export class TacticalGlobe {
     this.radius = 16;
     this.beacons = [];
     this.flightArcs = [];
+    this.labels = [];
     this.hoveredBeacon = null;
     this.autoRotate = true;
-    this.targetRotationY = 0;
 
     this.initGlobe();
   }
@@ -40,14 +39,14 @@ export class TacticalGlobe {
   }
 
   initGlobe() {
-    // 1. Base Dark Magenta-Obsidian Sphere
+    // 1. Base Dark Plum/Amethyst Obsidian Sphere (#210a2d / #371E4D)
     const sphereGeo = new THREE.SphereGeometry(this.radius, 64, 64);
     const globeMat = new THREE.MeshStandardMaterial({
-      color: 0x090212,
-      roughness: 0.8,
-      metalness: 0.3,
-      emissive: 0x140320,
-      emissiveIntensity: 0.4
+      color: 0x210a2d,
+      roughness: 0.75,
+      metalness: 0.35,
+      emissive: 0x371E4D,
+      emissiveIntensity: 0.5
     });
     this.baseGlobe = new THREE.Mesh(sphereGeo, globeMat);
     this.group.add(this.baseGlobe);
@@ -55,28 +54,27 @@ export class TacticalGlobe {
     // 2. Tactical Lat/Long Wireframe Grid
     const gridGeo = new THREE.SphereGeometry(this.radius + 0.05, 36, 18);
     const gridMat = new THREE.MeshBasicMaterial({
-      color: 0xff007f,
+      color: 0xB2094D,
       wireframe: true,
       transparent: true,
-      opacity: 0.12
+      opacity: 0.15
     });
     const gridMesh = new THREE.Mesh(gridGeo, gridMat);
     this.group.add(gridMesh);
 
-    // 3. Procedural Landmass Particle Dots & Continents Focus on Asia & Global
+    // 3. Procedural Landmass Coordinate Cloud with Khroma Tints
     this.createProceduralLandmass();
 
-    // 4. Glowing Magenta Atmospheric Halo (Custom Shader)
+    // 4. Glowing Magenta Atmospheric Halo Shader
     this.createAtmosphere();
 
-    // 5. Interactive Sector Beacons (India, China, Japan, Singapore, UAE)
-    this.createSectorBeacons();
+    // 5. Interactive Country Beacons & On-Globe Labels (India, China, etc.)
+    this.createCountryBeaconsOnGlobe();
 
     // 6. Supersonic Flight Trajectory Arcs
     this.createFlightArcs();
 
-    // Orient globe so Asia (India / China) faces camera by default
-    // India is lat ~20, lng ~79.
+    // Default orientation centered on Asia (India / China)
     this.group.rotation.y = -THREE.MathUtils.degToRad(78);
     this.group.rotation.x = THREE.MathUtils.degToRad(12);
 
@@ -84,7 +82,7 @@ export class TacticalGlobe {
   }
 
   createAtmosphere() {
-    const atmosGeo = new THREE.SphereGeometry(this.radius * 1.18, 64, 64);
+    const atmosGeo = new THREE.SphereGeometry(this.radius * 1.16, 64, 64);
     const atmosMat = new THREE.ShaderMaterial({
       vertexShader: `
         varying vec3 vNormal;
@@ -96,8 +94,8 @@ export class TacticalGlobe {
       fragmentShader: `
         varying vec3 vNormal;
         void main() {
-          float intensity = pow(0.65 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.2);
-          gl_FragColor = vec4(1.0, 0.0, 0.5, 1.0) * intensity * 1.4;
+          float intensity = pow(0.62 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.4);
+          gl_FragColor = vec4(0.7, 0.04, 0.3, 1.0) * intensity * 1.8;
         }
       `,
       blending: THREE.AdditiveBlending,
@@ -110,35 +108,30 @@ export class TacticalGlobe {
   }
 
   createProceduralLandmass() {
-    // Generate high-density tactical coordinate points mapped across real world continents
-    const pointCount = 3500;
+    const pointCount = 3800;
     const positions = [];
     const colors = [];
 
-    const colorMagenta = new THREE.Color(0xff007f);
-    const colorCyan = new THREE.Color(0x00f0ff);
-    const colorViolet = new THREE.Color(0x8338ec);
+    const colMagenta = new THREE.Color(0xB2094D);
+    const colRose = new THREE.Color(0xEDDBD8);
+    const colPlum = new THREE.Color(0x771450);
+    const colMauve = new THREE.Color(0xD4B4BD);
 
-    // Realistic density landmass generator (Asia, Europe, Africa, Americas, Oceania)
     for (let i = 0; i < pointCount; i++) {
       let lat, lng;
-
-      // Cluster heavily on Asia & Eurasia (India, China, Japan, SE Asia, Middle East)
       const regionRand = Math.random();
-      if (regionRand < 0.55) {
-        // Asia / Indian subcontinent / East Asia
-        lat = 5 + Math.random() * 50;
-        lng = 60 + Math.random() * 85;
-      } else if (regionRand < 0.75) {
-        // Europe & Middle East & Africa
+
+      if (regionRand < 0.60) {
+        // Asia focus: India, China, Japan, SE Asia, Middle East
+        lat = 5 + Math.random() * 52;
+        lng = 58 + Math.random() * 88;
+      } else if (regionRand < 0.78) {
         lat = -30 + Math.random() * 90;
         lng = -20 + Math.random() * 80;
-      } else if (regionRand < 0.90) {
-        // Americas
+      } else if (regionRand < 0.92) {
         lat = -50 + Math.random() * 115;
         lng = -125 + Math.random() * 85;
       } else {
-        // Oceania / Pacific Rim
         lat = -40 + Math.random() * 45;
         lng = 110 + Math.random() * 70;
       }
@@ -146,7 +139,8 @@ export class TacticalGlobe {
       const pos = this.latLngToVector3(lat, lng, 0.12 + Math.random() * 0.1);
       positions.push(pos.x, pos.y, pos.z);
 
-      const mixedColor = Math.random() > 0.4 ? colorMagenta : (Math.random() > 0.5 ? colorCyan : colorViolet);
+      const r = Math.random();
+      const mixedColor = r > 0.6 ? colMagenta : (r > 0.35 ? colRose : (r > 0.15 ? colMauve : colPlum));
       colors.push(mixedColor.r, mixedColor.g, mixedColor.b);
     }
 
@@ -155,10 +149,10 @@ export class TacticalGlobe {
     pointsGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
     const pointsMat = new THREE.PointsMaterial({
-      size: 0.35,
+      size: 0.38,
       vertexColors: true,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.88,
       blending: THREE.AdditiveBlending
     });
 
@@ -166,38 +160,85 @@ export class TacticalGlobe {
     this.group.add(pointCloud);
   }
 
-  createSectorBeacons() {
+  createCountryLabelSprite(sector) {
+    // Generate high-res 2D canvas texture for on-globe floating badge
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 140;
+    const ctx = canvas.getContext('2d');
+
+    // Background pill with laser border
+    ctx.fillStyle = 'rgba(33, 10, 45, 0.88)';
+    ctx.strokeStyle = '#B2094D';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.roundRect(10, 10, 492, 120, 16);
+    ctx.fill();
+    ctx.stroke();
+
+    // Top indicator dot & code
+    ctx.fillStyle = '#B2094D';
+    ctx.beginPath();
+    ctx.arc(38, 45, 10, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.font = 'bold 26px Orbitron, sans-serif';
+    ctx.fillStyle = '#EDDBD8';
+    ctx.fillText(`${sector.name.toUpperCase()} [${sector.code}]`, 60, 52);
+
+    // Section Category Subtitle (e.g. Professional Journey, Hobbies)
+    ctx.font = '600 24px Rajdhani, sans-serif';
+    ctx.fillStyle = '#D4B4BD';
+    ctx.fillText(`▸ ${sector.sectorTitle.toUpperCase()}`, 60, 95);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.minFilter = THREE.LinearFilter;
+    texture.wrapS = THREE.ClampToEdgeWrapping;
+    texture.wrapT = THREE.ClampToEdgeWrapping;
+
+    const spriteMat = new THREE.SpriteMaterial({
+      map: texture,
+      transparent: true,
+      depthTest: false
+    });
+
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.scale.set(6.5, 1.8, 1);
+    return sprite;
+  }
+
+  createCountryBeaconsOnGlobe() {
     Object.values(sectorData).forEach(sector => {
       const pos = this.latLngToVector3(sector.coordinates.lat, sector.coordinates.lng, 0.1);
 
       const beaconGroup = new THREE.Group();
       beaconGroup.position.copy(pos);
-      beaconGroup.lookAt(pos.clone().multiplyScalar(2)); // Orient normal to sphere surface
+      beaconGroup.lookAt(pos.clone().multiplyScalar(2));
 
-      // 1. Central Core Glowing Pip
-      const coreGeo = new THREE.SphereGeometry(0.55, 16, 16);
+      // 1. Glowing Core Sphere on globe surface
+      const coreGeo = new THREE.SphereGeometry(0.65, 16, 16);
       const coreMat = new THREE.MeshBasicMaterial({
-        color: sector.id === 'india' ? 0x00f0ff : (sector.id === 'china' ? 0xffd700 : 0xff007f)
+        color: sector.id === 'india' ? 0xEDDBD8 : (sector.id === 'china' ? 0xB2094D : 0xD4B4BD)
       });
       const coreMesh = new THREE.Mesh(coreGeo, coreMat);
       beaconGroup.add(coreMesh);
 
-      // 2. Holographic Sector Pillar
-      const pillarGeo = new THREE.CylinderGeometry(0.08, 0.08, 2.8, 8);
-      pillarGeo.rotateX(Math.PI / 2);
-      const pillarMat = new THREE.MeshBasicMaterial({
-        color: 0xff00a0,
+      // 2. Holographic Sector Light Column
+      const columnGeo = new THREE.CylinderGeometry(0.08, 0.08, 3.2, 8);
+      columnGeo.rotateX(Math.PI / 2);
+      const columnMat = new THREE.MeshBasicMaterial({
+        color: 0xB2094D,
         transparent: true,
-        opacity: 0.65
+        opacity: 0.75
       });
-      const pillarMesh = new THREE.Mesh(pillarGeo, pillarMat);
-      pillarMesh.position.z = 1.4;
-      beaconGroup.add(pillarMesh);
+      const columnMesh = new THREE.Mesh(columnGeo, columnMat);
+      columnMesh.position.z = 1.6;
+      beaconGroup.add(columnMesh);
 
-      // 3. Pulsing Radar Ring
-      const ringGeo = new THREE.RingGeometry(0.6, 0.85, 32);
+      // 3. Pulsing Concentric Radar Rings
+      const ringGeo = new THREE.RingGeometry(0.75, 1.05, 32);
       const ringMat = new THREE.MeshBasicMaterial({
-        color: 0x00f0ff,
+        color: 0xB2094D,
         side: THREE.DoubleSide,
         transparent: true,
         opacity: 0.85,
@@ -206,11 +247,16 @@ export class TacticalGlobe {
       const ringMesh = new THREE.Mesh(ringGeo, ringMat);
       beaconGroup.add(ringMesh);
 
-      // 4. Raycasting Hitbox (Invisible sphere for smooth clicking/hovering)
-      const hitGeo = new THREE.SphereGeometry(1.6, 8, 8);
+      // 4. On-Globe Country Name & Category Label Badge
+      const labelSprite = this.createCountryLabelSprite(sector);
+      labelSprite.position.z = 3.6; // Hover slightly above beacon
+      beaconGroup.add(labelSprite);
+
+      // 5. Large Raycasting Hitbox for Easy Clicking on Globe
+      const hitGeo = new THREE.SphereGeometry(2.8, 8, 8);
       const hitMat = new THREE.MeshBasicMaterial({ visible: false });
       const hitMesh = new THREE.Mesh(hitGeo, hitMat);
-      hitMesh.userData = { sector: sector, beaconGroup: beaconGroup };
+      hitMesh.userData = { sector: sector, beaconGroup: beaconGroup, sprite: labelSprite };
       beaconGroup.add(hitMesh);
 
       this.group.add(beaconGroup);
@@ -220,14 +266,13 @@ export class TacticalGlobe {
         group: beaconGroup,
         ring: ringMesh,
         core: coreMesh,
-        hitMesh: hitMesh,
-        baseScale: 1.0
+        sprite: labelSprite,
+        hitMesh: hitMesh
       });
     });
   }
 
   createFlightArcs() {
-    // Interconnect Asian sectors: India <-> China, India <-> UAE, China <-> Japan, India <-> Singapore
     const connections = [
       ['india', 'china'],
       ['india', 'uae'],
@@ -244,7 +289,6 @@ export class TacticalGlobe {
       const p1 = this.latLngToVector3(startSector.coordinates.lat, startSector.coordinates.lng, 0.1);
       const p2 = this.latLngToVector3(endSector.coordinates.lat, endSector.coordinates.lng, 0.1);
 
-      // Calculate midpoint elevated into orbit for realistic ballistic parabolic arc
       const mid = p1.clone().add(p2).multiplyScalar(0.5);
       const dist = p1.distanceTo(p2);
       mid.normalize().multiplyScalar(this.radius + dist * 0.38);
@@ -254,19 +298,19 @@ export class TacticalGlobe {
       const arcGeo = new THREE.BufferGeometry().setFromPoints(points);
 
       const arcMat = new THREE.LineBasicMaterial({
-        color: 0xff007f,
+        color: 0xB2094D,
         transparent: true,
-        opacity: 0.35,
+        opacity: 0.45,
         blending: THREE.AdditiveBlending
       });
 
       const arcLine = new THREE.Line(arcGeo, arcMat);
       this.group.add(arcLine);
 
-      // Traveling Tactical Photon Missile along flight path
-      const photonGeo = new THREE.SphereGeometry(0.22, 8, 8);
+      // Tactical Traveling Pulse along flight route
+      const photonGeo = new THREE.SphereGeometry(0.24, 8, 8);
       const photonMat = new THREE.MeshBasicMaterial({
-        color: 0x00f0ff,
+        color: 0xEDDBD8,
         blending: THREE.AdditiveBlending
       });
       const photonMesh = new THREE.Mesh(photonGeo, photonMat);
@@ -275,7 +319,7 @@ export class TacticalGlobe {
       this.flightArcs.push({
         curve: curve,
         mesh: photonMesh,
-        speed: 0.003 + Math.random() * 0.002,
+        speed: 0.0035 + Math.random() * 0.002,
         progress: Math.random()
       });
     });
@@ -289,31 +333,29 @@ export class TacticalGlobe {
     const targetLng = sector.coordinates.lng;
     const targetLat = sector.coordinates.lat;
 
-    // Smoothly calculate target Y and X rotation
-    const targetRotY = -THREE.MathUtils.degToRad(targetLng);
-    const targetRotX = THREE.MathUtils.degToRad(targetLat);
-
-    return { rotX: targetRotX, rotY: targetRotY };
+    return {
+      rotY: -THREE.MathUtils.degToRad(targetLng),
+      rotX: THREE.MathUtils.degToRad(targetLat)
+    };
   }
 
   update(time) {
-    // Subtle auto-rotation if idle
     if (this.autoRotate) {
-      this.group.rotation.y += 0.0018;
+      this.group.rotation.y += 0.0015;
     }
 
-    // Pulse sector radar rings
+    // Pulse radar rings on globe
     this.beacons.forEach((b, idx) => {
-      const pulse = Math.sin(time * 4 + idx) * 0.5 + 0.5;
-      b.ring.scale.set(1.0 + pulse * 1.2, 1.0 + pulse * 1.2, 1.0);
+      const pulse = Math.sin(time * 3.8 + idx) * 0.5 + 0.5;
+      b.ring.scale.set(1.0 + pulse * 1.3, 1.0 + pulse * 1.3, 1.0);
       b.ring.material.opacity = Math.max(0.1, 0.9 - pulse * 0.8);
 
-      // Hover scale boost
-      const targetScale = (this.hoveredBeacon === b) ? 1.4 : 1.0;
-      b.group.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15);
+      const isHovered = (this.hoveredBeacon === b);
+      const targetScale = isHovered ? 1.35 : 1.0;
+      b.group.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.18);
     });
 
-    // Advance traveling missiles along flight routes
+    // Advance traveling missiles
     this.flightArcs.forEach(arc => {
       arc.progress = (arc.progress + arc.speed) % 1;
       const point = arc.curve.getPoint(arc.progress);

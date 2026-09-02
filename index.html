@@ -28,6 +28,10 @@
         </div>
 
         <div class="header-right">
+          <button class="flow-toggle-btn" id="flow-toggle-btn" aria-label="Toggle Continuous Flow View">
+            <span id="flow-btn-icon">✦</span>
+            <span id="flow-btn-label">FLOW: ALL OPEN</span>
+          </button>
           <div class="telemetry-pill">
             <span id="telemetry-data">MACH 2.25 // ALT 52,000 FT // DEFCON 1</span>
           </div>
@@ -42,7 +46,7 @@
 
       <!-- Main Runway Grid with Staggered Alternating Jets & Category Lines -->
       <main class="runway-container" id="runway-container">
-        <!-- Rendered dynamically by main.js with full interactions -->
+        <!-- Rendered dynamically by main.js with in-place flowing drawers -->
       </main>
 
       <!-- Tactical Bottom Bar -->
@@ -58,9 +62,6 @@
         </div>
       </footer>
     </div>
-
-    <!-- Modal Portal -->
-    <div id="modal-portal"></div>
 
     <script type="module" src="/src/main.js"></script>
   </body>

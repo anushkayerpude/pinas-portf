@@ -46,6 +46,15 @@
   padding: 0;
 }
 
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
+  a, button, input, textarea, select, [role="button"] {
+    cursor: none !important;
+  }
+}
+
 html, body {
   width: 100%;
   min-height: 100%;
@@ -56,10 +65,7 @@ html, body {
   position: relative;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-body.modal-open {
-  overflow: hidden;
+  scroll-behavior: smooth;
 }
 
 /* Background Canvas Layer */
@@ -81,6 +87,106 @@ body.modal-open {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* ==========================================================
+   CUSTOM THEME MATCHING TACTICAL CURSOR
+   ========================================================== */
+.theme-cursor-dot {
+  position: fixed;
+  top: -4px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--nude-magenta-300);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  box-shadow: 0 0 10px var(--nude-magenta-500), 0 0 18px var(--nude-magenta-400);
+  transition: transform 0.05s linear, background-color 0.2s ease, width 0.2s ease, height 0.2s ease;
+}
+
+.theme-cursor-dot.cursor-hover-dot {
+  background-color: #ffffff;
+  box-shadow: 0 0 12px #ffffff, 0 0 24px var(--nude-magenta-400);
+  transform: scale(1.4);
+}
+
+.theme-cursor-ring {
+  position: fixed;
+  top: -18px;
+  left: -18px;
+  width: 36px;
+  height: 36px;
+  border: 1px dashed rgba(212, 122, 158, 0.55);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              top 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              left 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              transform 0.08s linear,
+              box-shadow 0.25s ease;
+}
+
+/* 4 Corner Reticle Crosshairs */
+.theme-cursor-ring .reticle-top,
+.theme-cursor-ring .reticle-bottom,
+.theme-cursor-ring .reticle-left,
+.theme-cursor-ring .reticle-right {
+  position: absolute;
+  background: var(--nude-magenta-400);
+  transition: all 0.2s ease;
+}
+
+.theme-cursor-ring .reticle-top {
+  top: -4px; width: 2px; height: 4px;
+}
+.theme-cursor-ring .reticle-bottom {
+  bottom: -4px; width: 2px; height: 4px;
+}
+.theme-cursor-ring .reticle-left {
+  left: -4px; width: 4px; height: 2px;
+}
+.theme-cursor-ring .reticle-right {
+  right: -4px; width: 4px; height: 2px;
+}
+
+.theme-cursor-ring.cursor-hover {
+  top: -26px;
+  left: -26px;
+  width: 52px;
+  height: 52px;
+  border: 1.5px solid var(--nude-magenta-300);
+  box-shadow: 0 0 20px var(--nude-magenta-glow), inset 0 0 10px rgba(212, 122, 158, 0.2);
+  border-radius: 8px; /* HUD square lock box */
+  animation: hudLockSpin 8s infinite linear;
+}
+
+.theme-cursor-ring.cursor-hover .reticle-top,
+.theme-cursor-ring.cursor-hover .reticle-bottom,
+.theme-cursor-ring.cursor-hover .reticle-left,
+.theme-cursor-ring.cursor-hover .reticle-right {
+  background: #ffffff;
+}
+
+.theme-cursor-ring.cursor-clicking {
+  top: -12px;
+  left: -12px;
+  width: 24px;
+  height: 24px;
+  border-color: #ffffff;
+  box-shadow: 0 0 25px #ffffff, 0 0 40px var(--nude-magenta-500);
+}
+
+@keyframes hudLockSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Custom Scrollbar */

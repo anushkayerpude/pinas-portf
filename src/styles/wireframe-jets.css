@@ -288,13 +288,23 @@
 }
 
 /* Supersonic Boost Animation Triggered on Jet Click */
-.jet-entity.supersonic-fly {
-  animation: supersonicBoost 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+.row-left .jet-entity.supersonic-fly {
+  animation: supersonicBoostRight 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-@keyframes supersonicBoost {
+.row-right .jet-entity.supersonic-fly {
+  animation: supersonicBoostLeft 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes supersonicBoostRight {
   0% { transform: scale(1) translateX(0); }
-  35% { transform: scale(1.15) translateX(30px) rotate(-3deg); filter: brightness(1.5) drop-shadow(0 0 40px #ff66b2); }
+  35% { transform: scale(1.15) translateX(35px) rotate(-2deg); filter: brightness(1.5) drop-shadow(0 0 40px #ff66b2); }
+  100% { transform: scale(1) translateX(0); }
+}
+
+@keyframes supersonicBoostLeft {
+  0% { transform: scale(1) translateX(0); }
+  35% { transform: scale(1.15) translateX(-35px) rotate(2deg); filter: brightness(1.5) drop-shadow(0 0 40px #ff66b2); }
   100% { transform: scale(1) translateX(0); }
 }
 
